@@ -231,7 +231,11 @@ tr:hover td{background:var(--bg2)}
   <div class="card">
     <div class="card-title">Observaciones de la jornada (opcional)</div>
     <div class="form-row">
-      <div class="form-group">
+      <div class="form-group" style="max-width:180px">
+        <label>Fecha</label>
+        <input type="date" id="obs-fecha">
+      </div>
+      <div class="form-group" style="flex:2">
         <label>Comentario</label>
         <input type="text" id="j-observaciones" placeholder="Ej: parada por mantenimiento, cambio de molde, problema con compresor...">
       </div>
@@ -887,7 +891,7 @@ function cambiarSemana(delta){state.semanaOffset+=delta;actualizarGraficosSemana
 function guardarObservacion(){
   var texto=document.getElementById('j-observaciones').value.trim();
   if(!texto){alert('Ingresá un comentario');return;}
-  var fechaEl=document.getElementById('j-fecha');
+  var fechaEl=document.getElementById('obs-fecha');
   var fecha=fechaEl&&fechaEl.value?fechaEl.value:hoy();
   var obs={id:genId(),fecha:fecha,texto:texto};
   var idx=state.observaciones.findIndex(function(o){return o.fecha===fecha;});
@@ -899,9 +903,23 @@ function guardarObservacion(){
   }
   state.observaciones.sort(function(a,b){return b.fecha.localeCompare(a.fecha);});
   document.getElementById('j-observaciones').value='';
+  // Si la fecha de la obs no está en la semana visible, navegar a ella
+  var diasVisible=diasSemana(state.semanaOffset);
+  if(diasVisible.indexOf(fecha)<0){
+    // Calcular el offset necesario para mostrar esa semana
+    var lunes=getLunes(0);
+    var lunesObs=new Date(fecha+'T12:00:00');
+    var dow=lunesObs.getDay();
+    var diff=dow===0?-6:1-dow;
+    lunesObs.setDate(lunesObs.getDate()+diff);
+    var diffMs=lunesObs.getTime()-lunes.getTime();
+    var diffSemanas=Math.round(diffMs/(7*24*60*60*1000));
+    state.semanaOffset=diffSemanas;
+    actualizarGraficosSemana();
+  }
   renderObservacionesSemana();
   guardarSesion();
-  toast('✅ Observación guardada para '+fmt(fecha));
+  toast('✅ Observación guardada para '+fmtConDia(fecha));
 }
 
 function fmtConDia(d){
@@ -2151,6 +2169,7 @@ function calcularCostos(){
 
 document.getElementById('fecha-hdr').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 document.getElementById('j-fecha').value=hoy();
+document.getElementById('obs-fecha').value=hoy();
 document.getElementById('p-fecha').value=hoy();
 document.getElementById('sal-fecha').value=hoy();
 document.getElementById('si-fecha').value=hoy();
