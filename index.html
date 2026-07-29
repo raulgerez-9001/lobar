@@ -88,23 +88,42 @@ tr:hover td{background:var(--bg2)}
 .session-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 /* Print */
 @media print{
-  header,.nav,.no-print,.section{display:none!important}
-  .print-only{display:block!important}
-  body{background:#fff;font-size:9px;margin:0;padding:0}
-  .main{padding:0;max-width:100%}
-  @page{size:A4 portrait;margin:8mm 8mm}
-  #informe-print{page-break-after:avoid;page-break-inside:avoid}
-  #informe-print *{font-size:9px!important;line-height:1.2!important;box-sizing:border-box}
-  #informe-print table{font-size:8.5px!important;width:100%}
-  #informe-print th,#informe-print td{padding:2px 4px!important}
-  #informe-print div[style*="font-size:20px"]{font-size:13px!important}
-  #informe-print div[style*="font-size:15px"]{font-size:11px!important}
+  @page{size:A4 portrait;margin:7mm 7mm}
+  *{box-sizing:border-box!important}
+  html,body{margin:0!important;padding:0!important;background:#fff!important;height:auto!important;overflow:visible!important}
+  header,.nav,.no-print,.section,.main{display:none!important}
+  .print-only{display:block!important;margin:0!important;padding:0!important}
+  #informe-print{
+    width:196mm!important;
+    max-height:280mm!important;
+    overflow:hidden!important;
+    margin:0!important;
+    padding:0!important;
+    page-break-after:avoid!important;
+    page-break-before:avoid!important;
+    page-break-inside:avoid!important;
+    break-after:avoid!important;
+    break-inside:avoid!important;
+  }
+  #informe-print *{font-size:8.5px!important;line-height:1.15!important}
+  #informe-print table{font-size:8px!important;width:100%!important;border-collapse:collapse!important}
+  #informe-print th,#informe-print td{padding:2px 3px!important}
+  #informe-print div[style*="font-size:20px"],
+  #informe-print div[style*="font-size:18px"]{font-size:13px!important}
+  #informe-print div[style*="font-size:15px"],
   #informe-print div[style*="font-size:14px"]{font-size:10px!important}
   #informe-print div[style*="font-size:12px"]{font-size:9px!important}
-  #informe-print div[style*="font-size:10px"]{font-size:8px!important}
+  #informe-print div[style*="font-size:10px"],
   #informe-print div[style*="font-size:8px"]{font-size:7.5px!important}
-  #informe-print img[style*="height:58px"]{height:36px!important;width:36px!important}
-  #informe-print img[style*="height:56px"]{height:36px!important;width:36px!important}
+  #informe-print img[style*="height:58px"],
+  #informe-print img[style*="height:56px"],
+  #informe-print img[style*="height:44px"]{height:32px!important;width:32px!important}
+  #informe-print div[style*="gap:6px"]{gap:4px!important}
+  #informe-print div[style*="margin-bottom:6px"]{margin-bottom:3px!important}
+  #informe-print div[style*="padding:6px"]{padding:4px!important}
+  #informe-print div[style*="margin-bottom:10px"]{margin-bottom:4px!important}
+  #informe-print div[style*="padding-bottom:8px"]{padding-bottom:4px!important}
+  #informe-print div[style*="margin-bottom:4px"]{margin-bottom:2px!important}
 }
 .print-only{display:none}
 /* Toast */
@@ -1787,7 +1806,7 @@ function generarInformePrint(){
     '</div>'+
 
     // ── PIE ──
-    '<div style="margin-top:6px;padding-top:6px;border-top:1px solid #e0ddd6;display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#9c9a93">'+
+    '<div style="margin-top:4px;padding-top:4px;border-top:1px solid #e0ddd6;display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#9c9a93">'+
       '<span>Turno 7:00–16:00 hs · Set-up 30 min · Almuerzo 60 min · Limpieza 60 min · Tiempo productivo 6,5 hs</span>'+
       '<span>Generado: '+new Date().toLocaleString('es-AR')+'</span></div>';
 }
